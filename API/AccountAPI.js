@@ -60,4 +60,6 @@ uri.post("/update-name", async (req, res) => {
         console.error("Can't update name", error);
         return res.status(500).json({ message: "Internal server error" });
     }
-});
+})
+
+module.export(uri);
