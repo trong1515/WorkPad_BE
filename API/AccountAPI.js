@@ -62,4 +62,4 @@ uri.post("/update-name", async (req, res) => {
     }
 })
 
-module.export(uri);
+module.export = uri;
