@@ -1,18 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const uri = express();
-const bcrypt = require("bcrypt");
 const NoteModel = require("../Model/NoteModel");
 const bodyParser = require("body-parser");
 
 uri.use(bodyParser.json());
 uri.use("/api", router);
 
-router.post('/save-note', async (req, res) => {
+router.post('/api/save-note', async (req, res) => {
     const Tilte = req.body.Title;
     const Content = req.body.Content;
     try {
-        const newNote = new NoteModel({ Title, Content }); // Corrected typo here
+        const newNote = new NoteModel({ Tilte, Content }); // Corrected typo here
         const saveNote = await newNote.save();
         res.status(200).json({ message: "Success", data: saveNote });
     } catch (error) {
@@ -20,7 +19,7 @@ router.post('/save-note', async (req, res) => {
         return res.status(500).json({ message: "Server Error" });
     }
 })
-router.post('/update-content', async (req, res) => {
+router.post('/api/update-content', async (req, res) => {
     const id = req.body.id;
     const newContent = req.body.newContent;
     try {
@@ -36,7 +35,7 @@ router.post('/update-content', async (req, res) => {
         return res.status(500).json({ message: "Server Error" });
     }
 })
-router.post('/get-note', async (req, res) => {
+router.post('/api/get-note', async (req, res) => {
     const id = req.body.id;
     try {
         const note = await NoteModel.findOne({ _id: id });

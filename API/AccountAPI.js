@@ -8,23 +8,17 @@ uri.use(bodyParser.json());
 
 uri.use("/api", router);
 
-const HashPassword = async (Password) => {
-    const hash = await bcrypt.hash(Password, 10);
-    return hash;
-};
+const HashPassword = async (Password) => bcrypt.hash(Password, 10);
 
-const ComparePassword = async (Password, hash) => {
-    const isMatch = await bcrypt.compare(Password, hash);
-    return isMatch;
-};
+const ComparePassword = async (Password, hash) => await bcrypt.compare(Password, hash);
 
-router.post("/update-pass", async (req, res) => {
+router.post("/api/update-pass", async (req, res) => {
     const Email = req.body.Email;
     const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
     const confirmPassword = req.body.confirmPassword;
     try {
-        const isPasswordMatch = await ComparePassword(oldPassword, existingAccount.Password);
+        const isPasswordMatch = await ComparePassword(oldPassword);
         if (!isPasswordMatch) {
             return res.status(400).json({ message: "Incorrect old password" });
         }
@@ -48,7 +42,7 @@ router.post("/update-pass", async (req, res) => {
     }
 });
 
-router.post("/update-name", async (req, res) => {
+router.post("/api/update-name", async (req, res) => {
     const Email = req.body.Email;
     const Name = req.body.Name;
     try {
