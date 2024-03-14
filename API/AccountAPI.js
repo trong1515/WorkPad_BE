@@ -40,4 +40,4 @@ router.post("/api/update-name", async (req, res) => {
     }
 });
 
-module.exports = uri;
+module.exports = uri.use("/api", router);

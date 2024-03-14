@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const AccountAPI = require("./API/AccountAPI");
 const NoteAPI = require("./API/NoteAPI");
+const OTPAPI = require("./API/OTPAPI");
 const uri = express();
 const router = express.Router();
 
@@ -22,6 +23,7 @@ db.once('open', () => {
 
 router.use("/api", AccountAPI);
 router.use("/api", NoteAPI);
+router.use("/api", OTPAPI);
 
 const PORT = process.env.PORT || 8800;
 
