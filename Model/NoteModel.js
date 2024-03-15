@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const NoteSchema = new mongoose.Schema({
-    Note_id:{
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'Note',
-    },
     Title:{
         type: String,
         required: true,
@@ -13,6 +8,7 @@ const NoteSchema = new mongoose.Schema({
     Prioritize:{
         type: Number,
         required: true,
+        default: 0
     },
     DateCreate:{
         type: String, 

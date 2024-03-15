@@ -1,18 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const uri = express();
 const bcrypt = require("bcrypt");
 const AccountModel = require("../Model/AccountModel");
-const bodyParser = require("body-parser");
-uri.use(bodyParser.json());
-
-uri.use("/api", router);
 
 const HashPassword = async (Password) => bcrypt.hash(Password, 10);
 
 const ComparePassword = async (Password, hash) => await bcrypt.compare(Password, hash);
 
-router.post("/api/change-pass", async (req, res) => {
+router.post("/change-pass", async (req, res) => {
     const Email = req.body.Email;
     const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
@@ -27,7 +22,7 @@ router.post("/api/change-pass", async (req, res) => {
     }
 });
 
-router.post("/api/update-name", async (req, res) => {
+router.post("/update-name", async (req, res) => {
     const Email = req.body.Email;
     const Name = req.body.Name;
     const existingAccount = await AccountModel.findOne({ Email: Email });
@@ -40,4 +35,4 @@ router.post("/api/update-name", async (req, res) => {
     }
 });
 
-module.exports = uri.use("/api", router);
+module.exports = router;

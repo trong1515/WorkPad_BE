@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const uri = express();
 const NoteModel = require("../Model/NoteModel");
-const bodyParser = require("body-parser");
 
-uri.use(bodyParser.json());
-uri.use("/api", router);
-
-router.post('/api/save-note', async (req, res) => {
+router.post('/save-note', async (req, res) => {
+    const DateTime = new Date();
+    const day = DateTime.getDate();
+    const month = DateTime.getMonth() + 1;
+    const year = DateTime.getFullYear();
     const Tilte = req.body.Title;
     const Content = req.body.Content;
-    const newNote = new NoteModel({ Tilte, Content });
+    const Email = req.body.Email;
+    const newNote = new NoteModel({ Title: Tilte, Content: Content, EmailCreate: Email, DateCreate: (day + "/" + month + "/" + year) });
     const saveNote = await newNote.save();
     if (saveNote){
         res.json({Status: "Success"})
@@ -18,37 +18,34 @@ router.post('/api/save-note', async (req, res) => {
         res.json({Status: "Error"})
     }
 })
-router.post('/api/update-content', async (req, res) => {
+router.post('/update-content', async (req, res) => {
     const Note_id = req.body.Note_id;
     const newContent = req.body.newContent;
-    const existingNote = await NoteModel.findById(Note_id);
+    const existingNote = await NoteModel.findByIdAndUpdate(Note_id, { $set: { Content: newContent }});
     if (existingNote){
-        existingNote.Content = newContent;
-        const updateContent = await existingNote.save();
-        res.json({Status: "Success", data: updateContent})
+        res.json({ Status: "Success"});
     } else {
-        res.json({Status: "Error"})
+        res.json({ Status: "Error" });
     }
 })
-router.post('/api/get-note', async (req, res) => {
+router.post('/get-note', async (req, res) => {
     const Note_id = req.body.Note_id;
-    const note = await NoteModel.findOne({ _id: Note_id});
+    const note = await NoteModel.findById(Note_id);
     if (note){
         res.json({Status: "Success", data: note})
     } else {
         res.json({Status: "Error"})
     }
 })
-router.post('/api/delete-note', async (req, res) => {
+router.post('/delete-note', async (req, res) => {
     const Note_id = req.body.Note_id;
     const existingNote = await NoteModel.findById(Note_id);
     if (existingNote){
-        const deleteNote = await NoteModel.delete;
-        NoteModel.deleteOne({ _id: Note_id });
+        const deleteNote = await NoteModel.deleteOne({ _id: Note_id });
         res.json({Status: "Success", data: deleteNote})
     } else {
         res.json({Status: "Error"})
     }
 });
 
-module.exports = uri.use("/api", router);
+module.exports = router;
