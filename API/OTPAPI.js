@@ -12,8 +12,8 @@ uri.use("/api", router);
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'txtrong109@gmail.com',
-        pass: 'trong1515'
+        user: '',
+        pass: ''
     }
 });
 
